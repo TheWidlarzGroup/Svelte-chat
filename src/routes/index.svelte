@@ -1,40 +1,31 @@
-<script>
-    import RoomButton from "../components/roomButton.svelte";
+<script context="module">
+    import RoomButton from "../components/roomButton.svelte"
+    import apolloClient from "../graphql-client";
     import {queryRooms} from "../store/queries";
-    import apolloClient from '../graphql-client'
 
-    let firstRoom;
-
-    const downloadChatRooms = async () => {
+    export async function load() {
         const rooms = await apolloClient.query({
             query: queryRooms
         })
-        const roomsData = await rooms.data
-        firstRoom = roomsData.usersRooms.rooms[0]
 
-        return rooms
+        return {
+            props: {
+                rooms
+            }
+        }
     }
-
-    $: console.log(firstRoom)
-
-    const data = downloadChatRooms()
-
 </script>
 
-
+<script>
+    export let rooms
+</script>
 
 <div class="container">
     <h1>Chat Rooms</h1>
 
-    {#await data}
-        <p> </p>
-    {:then { data }}
-        {#each data.usersRooms.rooms as room}
-            <RoomButton room={room}/>
-        {/each}
-    {:catch error}
-        <p style="color: red">{error.message}</p>
-    {/await}
+    {#each rooms.data.usersRooms.rooms as room}
+        <RoomButton room={room}/>
+    {/each}
 </div>
 
 

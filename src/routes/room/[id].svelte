@@ -1,4 +1,5 @@
 <script context="module">
+    import Input from "../../components/input.svelte";
     import apolloClient from "../../graphql-client";
     import {queryRoom} from "../../store/queries";
 
@@ -14,12 +15,12 @@
                 chatRoom
             }
         }
-
     }
 </script>
 
 <script>
     export let chatRoom
+    console.log(chatRoom)
 </script>
 
 <div class="messages">
@@ -30,18 +31,25 @@
             <p class="message">{message.body}</p>
         {/if}
     {/each}
+    <Input roomId={chatRoom.data.room.id}/>
 </div>
+
+
 
 <style>
     .messages {
         width: 40%;
         height: auto;
-        min-height: 90vh;
+        min-height: 95vh;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         overflow: scroll;
+        align-items: center;
+        padding-bottom: 20px;
+        padding-left: 25px;
+        padding-right: 25px;
     }
     .my-message {
         align-self: flex-end;
@@ -49,7 +57,6 @@
         padding: 15px;
         margin-bottom: 1px;
         border-radius: 13px;
-        margin-right: 25px;
         border-bottom-right-radius: 0;
         max-width: 65%;
         color: black;
@@ -60,7 +67,6 @@
         padding: 15px;
         margin-bottom: 1px;
         border-radius: 13px;
-        margin-left: 25px;
         border-bottom-left-radius: 0;
         max-width: 65%;
         color: white;
